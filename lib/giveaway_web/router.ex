@@ -20,6 +20,7 @@ defmodule GiveawayWeb.Router do
     get "/", PageController, :index
 
     live "/giveaway", GiveawayLive
+    live "/giveaway/room/:room_name", RoomLive
   end
 
   # Other scopes may use custom stacks.

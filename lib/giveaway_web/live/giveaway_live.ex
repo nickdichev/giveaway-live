@@ -22,15 +22,14 @@ defmodule GiveawayWeb.GiveawayLive do
     {:noreply, socket}
   end
 
-  def handle_event("validate", %{"create_room" => create_params}, %{id: "create"} = socket) do
-    changeset =
-      CreateRoom.changeset(%CreateRoom{}, create_params)
-      |> Map.put(:action, :insert)
-
-    {:noreply, assign(socket, :changeset, changeset)}
-  end
-
   def handle_event("join_room", _value, socket) do
     {:noreply, assign(socket, :index_state, :join)}
+  end
+
+  @doc """
+  Handles the message the create room LiveComponent sends
+  """
+  def handle_info(:create_redirect, socket) do
+    {:noreply, live_redirect(socket, to: "/giveaway/room")}
   end
 end

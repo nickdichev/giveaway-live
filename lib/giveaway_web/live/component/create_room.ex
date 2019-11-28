@@ -1,15 +1,15 @@
-defmodule GiveawayWeb.FormLive do
+defmodule GiveawayWeb.Component.CreateRoom do
   use Phoenix.LiveComponent
 
   alias Giveaway.Changeset.CreateRoom
-  alias GiveawayWeb.FormView
+  alias GiveawayWeb.GiveawayView
 
   def mount(socket) do
     {:ok, socket}
   end
 
   def render(assigns) do
-    FormView.render("create_room.html", assigns)
+    GiveawayView.render("create_room.html", assigns)
   end
 
   def handle_event("validate", %{"create_room" => create_params}, socket) do
@@ -24,7 +24,8 @@ defmodule GiveawayWeb.FormLive do
     with true <- changeset.valid?,
          {:ok, _pid} <- GiveawayServer.start_link(room_name: room_name) do
            put_flash(socket, :info, "Created room #{room_name}")
-           {:no_reply, live_redirect(socket, to: "/giveaway/room")}
+           send(self(), :create_redirect)
+           {:noreply, socket}
     else
       false ->
         put_flash(socket, :error, "Could not create room #{room_name}")

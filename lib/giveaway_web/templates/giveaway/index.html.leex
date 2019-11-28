@@ -1,0 +1,9 @@
+<button phx-click="create_room">Create Room</button>
+<%= if @index_state == :create do %>
+  <%= live_render(@socket, GiveawayWeb.FormLive, id: :create) %>
+<% end %>
+
+<button phx-click="join_room">Join Room</button>
+<%= if @index_state == :join do %>
+World
+<% end %>

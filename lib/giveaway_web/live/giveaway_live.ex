@@ -1,7 +1,6 @@
 defmodule GiveawayWeb.GiveawayLive do
   use Phoenix.LiveView
 
-  alias Giveaway.Room
   alias Giveaway.Changeset.CreateRoom
 
   alias GiveawayWeb.GiveawayView
@@ -41,7 +40,9 @@ defmodule GiveawayWeb.GiveawayLive do
   end
 
   @doc """
-  Handles the message the create room LiveComponent sends
+  Handles the room_created message the LiveComponent sends.
+
+  This will update the room list on anyone looking at the lobby.
   """
   def handle_info({:room_created, room_name}, socket) do
     assigns = %{
@@ -50,5 +51,9 @@ defmodule GiveawayWeb.GiveawayLive do
     }
 
     {:noreply, assign(socket, assigns)}
+  end
+
+  def handle_info({:create_redirect, room_name}, socket) do
+    {:noreply, live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
   end
 end

@@ -6,7 +6,9 @@
   <button phx-click="cancel">Cancel</button>
 <% end %>
 
+<button phx-click="determine_winner">Winner</button>
+
 <p>
 
 Participants:
-<%= live_component(@socket, GiveawayWeb.Component.ParticipantsList, id: :participants_list, participants: @participants) %>
+<%= live_component(@socket, GiveawayWeb.Component.ParticipantsList, id: :participants_list, participants: @participants, winner: @winner) %>

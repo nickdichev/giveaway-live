@@ -34,6 +34,10 @@ defmodule Giveaway.Server do
     GenServer.call(via_tuple(room_name), {:join, participant_name})
   end
 
+  def determine_winner(room_name) do
+    GenServer.call(via_tuple(room_name), :determine_winner)
+  end
+
   #############
   # CALLBACKS #
   #############
@@ -63,6 +67,13 @@ defmodule Giveaway.Server do
     new_participants = [name | state.participants]
     new_state = %{state | participants: new_participants}
     {:reply, new_state.participants, new_state}
+  end
+
+  @impl GenServer
+  def handle_call(:determine_winner, _, state) do
+    winner = Enum.random(state.participants)
+    new_state = %{state | winner: winner}
+    {:reply, winner, new_state}
   end
 
   ###############

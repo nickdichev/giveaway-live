@@ -1,6 +1,7 @@
 defmodule GiveawayWeb.RoomLive do
   use Phoenix.LiveView
 
+  alias Giveaway.Room
   alias Giveaway.Changeset.JoinRoom
 
   alias GiveawayWeb.RoomView
@@ -8,6 +9,7 @@ defmodule GiveawayWeb.RoomLive do
   def mount(_session, socket) do
     assigns = %{
       index_state: nil,
+      winner: nil
     }
 
     {:ok, assign(socket, assigns)}
@@ -46,6 +48,14 @@ defmodule GiveawayWeb.RoomLive do
     {:noreply, assign(socket, :index_state, nil)}
   end
 
+  def handle_event("determine_winner", _value, socket) do
+    room_name = socket.assigns.room_name
+    winner = Room.determine_winner(socket.assigns.room_name)
+    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:winner, winner})
+
+    {:noreply, assign(socket, :winner, winner)}
+  end
+
   def handle_info({:join, participant}, socket) do
     assigns = %{
       participants: [participant | socket.assigns.participants],
@@ -53,5 +63,9 @@ defmodule GiveawayWeb.RoomLive do
     }
 
     {:noreply, assign(socket, assigns)}
+  end
+
+  def handle_info({:winner, winner}, socket) do
+    {:noreply, assign(socket, :winner, winner)}
   end
 end

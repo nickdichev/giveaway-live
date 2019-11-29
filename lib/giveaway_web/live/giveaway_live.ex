@@ -1,6 +1,7 @@
 defmodule GiveawayWeb.GiveawayLive do
   use Phoenix.LiveView
 
+  alias Giveaway.Room
   alias Giveaway.Changeset.CreateRoom
 
   alias GiveawayWeb.GiveawayView
@@ -34,7 +35,12 @@ defmodule GiveawayWeb.GiveawayLive do
   @doc """
   Handles the message the create room LiveComponent sends
   """
-  def handle_info({:create_redirect, room_name}, socket) do
-    {:noreply, live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
+  def handle_info({:create_room, room_name}, socket) do
+    case Room.create_room(room_name) do
+      {:ok, _pid} ->
+        {:noreply, live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
+      {:error, {:already_started, _pid}} ->
+        {:noreply, socket}
+    end
   end
 end

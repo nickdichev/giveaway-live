@@ -3,10 +3,3 @@
   <%= live_component(@socket, GiveawayWeb.Component.CreateRoom, id: :create, changeset: @changeset) %>
   <button phx-click="cancel">Cancel</button>
 <% end %>
-
-<p>
-
-<button phx-click="join_room">Join Room</button>
-<%= if @index_state == :join do %>
-World
-<% end %>

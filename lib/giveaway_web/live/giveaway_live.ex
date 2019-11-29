@@ -27,6 +27,10 @@ defmodule GiveawayWeb.GiveawayLive do
     {:noreply, assign(socket, :index_state, :join)}
   end
 
+  def handle_event("cancel", _value, socket) do
+    {:noreply, assign(socket, :index_state, :nil)}
+  end
+
   @doc """
   Handles the message the create room LiveComponent sends
   """

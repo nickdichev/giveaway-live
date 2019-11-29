@@ -22,7 +22,7 @@ defmodule GiveawayWeb.Component.CreateRoom do
     room_name = room_name(create_params)
 
     with true <- changeset.valid?,
-         {:ok, _pid} <- GiveawayServer.start_link(room_name: room_name) do
+         {:ok, _pid} <- Giveaway.Server.start_link(room_name: room_name) do
            send(self(), {:create_redirect, room_name})
            {:noreply, socket}
     else

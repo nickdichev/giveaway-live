@@ -1,4 +1,4 @@
-defmodule GiveawayServer do
+defmodule Giveaway.Server do
   use GenServer
 
   defmodule State do
@@ -18,7 +18,7 @@ defmodule GiveawayServer do
   ##############
 
   @impl GenServer
-  @spec init(any) :: {:ok, GiveawayServer.State.t()}
+  @spec init(any) :: {:ok, Giveaway.Server.State.t()}
   def init(opts) do
     state = %State{
       room_name: Keyword.fetch!(opts, :room_name)

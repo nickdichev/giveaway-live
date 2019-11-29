@@ -4,17 +4,17 @@ defmodule GiveawayWeb.GiveawayLive do
   alias Giveaway.Changeset.CreateRoom
 
   alias GiveawayWeb.GiveawayView
+  alias GiveawayWeb.Router.Helpers, as: Routes
 
   def mount(_session, socket) do
     {:ok, assign(socket, %{
         index_state: nil,
-        room_names: Giveaway.Room.get_rooms()
+        room_names: Giveaway.Room.get_room_names()
       })
     }
   end
 
   def render(assigns) do
-    IO.inspect(assigns, label: :view_render)
     GiveawayView.render("index.html", assigns)
   end
 
@@ -35,6 +35,6 @@ defmodule GiveawayWeb.GiveawayLive do
   Handles the message the create room LiveComponent sends
   """
   def handle_info({:create_redirect, room_name}, socket) do
-    {:noreply, live_redirect(socket, to: "/giveaway/room/#{room_name}")}
+    {:noreply, live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
   end
 end

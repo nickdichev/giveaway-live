@@ -26,6 +26,14 @@ defmodule Giveaway.Server do
     GenServer.call(room_pid, :get_name)
   end
 
+  def get_participants(room_name) do
+    GenServer.call(via_tuple(room_name), :get_participants)
+  end
+
+  def join(room_name, participant_name) do
+    GenServer.call(via_tuple(room_name), {:join, participant_name})
+  end
+
   #############
   # CALLBACKS #
   #############
@@ -43,6 +51,18 @@ defmodule Giveaway.Server do
   @impl GenServer
   def handle_call(:get_name, _, state) do
     {:reply, state.room_name, state}
+  end
+
+  @impl GenServer
+  def handle_call(:get_participants, _, state) do
+    {:reply, state.participants, state}
+  end
+
+  @impl GenServer
+  def handle_call({:join, name}, _, state) do
+    new_participants = [name | state.participants]
+    new_state = %{state | participants: new_participants}
+    {:reply, new_state.participants, new_state}
   end
 
   ###############

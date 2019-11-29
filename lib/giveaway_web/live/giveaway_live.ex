@@ -5,6 +5,7 @@ defmodule GiveawayWeb.GiveawayLive do
   alias Giveaway.Changeset.CreateRoom
 
   def mount(_session, socket) do
+    # TODO check for connected?
     socket = assign(socket, :index_state, nil)
    {:ok, socket}
   end
@@ -29,7 +30,7 @@ defmodule GiveawayWeb.GiveawayLive do
   @doc """
   Handles the message the create room LiveComponent sends
   """
-  def handle_info(:create_redirect, socket) do
-    {:noreply, live_redirect(socket, to: "/giveaway/room")}
+  def handle_info({:create_redirect, room_name}, socket) do
+    {:noreply, live_redirect(socket, to: "/giveaway/room/#{room_name}")}
   end
 end

@@ -23,12 +23,10 @@ defmodule GiveawayWeb.Component.CreateRoom do
 
     with true <- changeset.valid?,
          {:ok, _pid} <- GiveawayServer.start_link(room_name: room_name) do
-           put_flash(socket, :info, "Created room #{room_name}")
-           send(self(), :create_redirect)
+           send(self(), {:create_redirect, room_name})
            {:noreply, socket}
     else
       false ->
-        put_flash(socket, :error, "Could not create room #{room_name}")
         {:noreply, assign(socket, :changeset, changeset)}
       {:error, {:already_started, _pid}} -> IO.puts("BAD")
       {:error, _reason} -> IO.puts("BAD)")

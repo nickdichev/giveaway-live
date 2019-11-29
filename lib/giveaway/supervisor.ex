@@ -13,4 +13,8 @@ defmodule Giveaway.RoomSupervisor do
     DynamicSupervisor.start_child(__MODULE__, Giveaway.Server.child_spec(room_name: room_name))
   end
 
+  def get_children() do
+    for {:undefined, pid, _, _} <- DynamicSupervisor.which_children(__MODULE__), do: pid
+  end
+
 end

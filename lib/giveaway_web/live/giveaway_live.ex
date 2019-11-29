@@ -1,16 +1,20 @@
 defmodule GiveawayWeb.GiveawayLive do
   use Phoenix.LiveView
 
-  alias GiveawayWeb.GiveawayView
   alias Giveaway.Changeset.CreateRoom
 
+  alias GiveawayWeb.GiveawayView
+
   def mount(_session, socket) do
-    # TODO check for connected?
-    socket = assign(socket, :index_state, nil)
-   {:ok, socket}
+    {:ok, assign(socket, %{
+        index_state: nil,
+        room_names: Giveaway.Room.get_rooms()
+      })
+    }
   end
 
   def render(assigns) do
+    IO.inspect(assigns, label: :view_render)
     GiveawayView.render("index.html", assigns)
   end
 

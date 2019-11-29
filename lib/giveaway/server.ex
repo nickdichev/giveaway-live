@@ -22,9 +22,13 @@ defmodule Giveaway.Server do
     GenServer.start_link(__MODULE__, room_name, name: via_tuple(room_name))
   end
 
-  ##############
-  # PUBLIC API #
-  ##############
+  def get_name(room_pid) do
+    GenServer.call(room_pid, :get_name)
+  end
+
+  #############
+  # CALLBACKS #
+  #############
 
   @impl GenServer
   @spec init(any) :: {:ok, Giveaway.Server.State.t()}
@@ -34,6 +38,11 @@ defmodule Giveaway.Server do
     }
 
     {:ok, state}
+  end
+
+  @impl GenServer
+  def handle_call(:get_name, _, state) do
+    {:reply, state.room_name, state}
   end
 
   ###############

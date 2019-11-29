@@ -1,5 +1,10 @@
 <button phx-click="create_room">Create Room</button>
 <%= if @index_state == :create do %>
-  <%= live_component(@socket, GiveawayWeb.Component.CreateRoom, id: :create, changeset: @changeset) %>
+  <%= live_component(@socket, GiveawayWeb.Component.CreateRoom, id: :create_room, changeset: @changeset) %>
   <button phx-click="cancel">Cancel</button>
 <% end %>
+
+<p>
+
+Rooms:
+<%= live_component(@socket, GiveawayWeb.Component.RoomList, content: @room_names) %>

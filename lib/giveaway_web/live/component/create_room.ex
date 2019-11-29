@@ -1,8 +1,9 @@
 defmodule GiveawayWeb.Component.CreateRoom do
   use Phoenix.LiveComponent
 
+  alias Giveaway.Room
   alias Giveaway.Changeset.CreateRoom
-  alias Giveaway.RoomSupervisor
+
   alias GiveawayWeb.GiveawayView
 
   def mount(socket) do
@@ -23,7 +24,7 @@ defmodule GiveawayWeb.Component.CreateRoom do
     room_name = room_name(create_params)
 
     with true <- changeset.valid?,
-         {:ok, _pid} <- RoomSupervisor.create_room(room_name) do
+         {:ok, _pid} <- Room.create_room(room_name) do
            send(self(), {:create_redirect, room_name})
            {:noreply, socket}
     else
@@ -31,11 +32,7 @@ defmodule GiveawayWeb.Component.CreateRoom do
         {:noreply, assign(socket, :changeset, changeset)}
 
       {:error, {:already_started, _pid}} ->
-        IO.puts("already exists")
-        {:noreply,
-          socket
-          |> put_flash(:error, "Already exists.")
-        }
+        {:noreply, socket}
     end
   end
 

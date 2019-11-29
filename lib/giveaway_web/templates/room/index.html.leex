@@ -2,7 +2,7 @@
 
 <button phx-click="join_room">Join Room</button>
 <%= if @index_state == :join_room do %>
-  <%= live_component(@socket, GiveawayWeb.Component.JoinRoom, id: :join_room, changeset: @changeset) %>
+  <%= live_component(@socket, GiveawayWeb.Component.JoinRoom, id: :join_room, changeset: @changeset, room_name: @room_name) %>
   <button phx-click="cancel">Cancel</button>
 <% end %>
 

@@ -1,7 +1,6 @@
 defmodule GiveawayWeb.RoomLive do
   use Phoenix.LiveView
 
-  alias Giveaway.Room
   alias Giveaway.Changeset.JoinRoom
 
   alias GiveawayWeb.RoomView
@@ -21,6 +20,8 @@ defmodule GiveawayWeb.RoomLive do
   def handle_params(params, _uri, socket) do
     room_name = Map.get(params, "room_name")
     participants = Giveaway.Room.get_participants(room_name)
+
+    if connected?(socket), do: Phoenix.PubSub.subscribe(Giveaway.PubSub, "room:#{room_name}")
 
     assigns = %{
       room_name: room_name,
@@ -46,10 +47,8 @@ defmodule GiveawayWeb.RoomLive do
   end
 
   def handle_info({:join, participant}, socket) do
-    room_name = socket.assigns.room_name
-
     assigns = %{
-      participants: Room.join(room_name, participant),
+      participants: [participant | socket.assigns.participants],
       index_state: nil
     }
 

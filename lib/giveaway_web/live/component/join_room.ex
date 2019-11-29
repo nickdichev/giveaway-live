@@ -2,7 +2,6 @@ defmodule GiveawayWeb.Component.JoinRoom do
   use Phoenix.LiveComponent
 
   alias Giveaway.Changeset.JoinRoom
-  alias Giveaway.Room
 
   alias GiveawayWeb.RoomView
 
@@ -23,13 +22,12 @@ defmodule GiveawayWeb.Component.JoinRoom do
     changeset = changeset(join_params)
     participant_name = participant_name(join_params)
 
-    with true <- changeset.valid?,
-         participants <- Room.join("aaaaa", participant_name) do
-           send(self(), :cancel)
-           send(self(), {:updated_participants, participants})
-           {:noreply, socket}
+    if changeset.valid? do
+      send(self(), {:join, participant_name})
+      {:noreply, socket}
+    else
+      {:noreply, assign(socket, :changeset, changeset)}
     end
-
   end
 
   defp changeset(join_params) do

@@ -1,6 +1,7 @@
 defmodule GiveawayWeb.RoomLive do
   use Phoenix.LiveView
 
+  alias Giveaway.Room
   alias Giveaway.Changeset.JoinRoom
 
   alias GiveawayWeb.RoomView
@@ -44,11 +45,14 @@ defmodule GiveawayWeb.RoomLive do
     {:noreply, assign(socket, :index_state, nil)}
   end
 
-  def handle_info({:updated_participants, participants}, socket) do
-    {:noreply, assign(socket, :participants, participants)}
-  end
+  def handle_info({:join, participant}, socket) do
+    room_name = socket.assigns.room_name
 
-  def handle_info(:cancel, socket) do
-    {:noreply, assign(socket, :index_state, nil)}
+    assigns = %{
+      participants: Room.join(room_name, participant),
+      index_state: nil
+    }
+
+    {:noreply, assign(socket, assigns)}
   end
 end

@@ -21,4 +21,6 @@ defmodule Giveaway.Room do
   def join(room_name, participant_name), do: Server.join(room_name, participant_name)
 
   def determine_winner(room_name), do: Server.determine_winner(room_name)
+
+  def get_winner(room_name), do: Server.get_winner(room_name)
 end

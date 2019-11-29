@@ -9,7 +9,6 @@ defmodule GiveawayWeb.RoomLive do
   def mount(_session, socket) do
     assigns = %{
       index_state: nil,
-      winner: nil
     }
 
     {:ok, assign(socket, assigns)}
@@ -27,7 +26,8 @@ defmodule GiveawayWeb.RoomLive do
 
     assigns = %{
       room_name: room_name,
-      participants: participants
+      participants: participants,
+      winner: Room.get_winner(room_name)
     }
 
     {:noreply, assign(socket, assigns)}

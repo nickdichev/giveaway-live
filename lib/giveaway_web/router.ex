@@ -17,10 +17,8 @@ defmodule GiveawayWeb.Router do
   scope "/", GiveawayWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-
-    live "/giveaway", GiveawayLive
-    live "/giveaway/room/:room_name", RoomLive
+    live "/", GiveawayLive
+    live "/room/:room_name", RoomLive
   end
 
   # Other scopes may use custom stacks.

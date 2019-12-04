@@ -1,6 +1,8 @@
 defmodule Giveaway.Server do
   use GenServer
 
+  require Logger
+
   defmodule State do
     defstruct [:room_name, :winner, :timeout, participants: []]
   end
@@ -11,6 +13,7 @@ defmodule Giveaway.Server do
     %{
       id: room_name,
       start: {__MODULE__, :start_link, [room_name]},
+      restart: :transient
     }
   end
 
@@ -85,9 +88,16 @@ defmodule Giveaway.Server do
     {:reply, winner, new_state, state.timeout}
   end
 
+  @impl GenServer
   def handle_call(:get_winner, _, state) do
     winner = Map.get(state, :winner, nil)
     {:reply, winner, state, state.timeout}
+  end
+
+  @impl GenServer
+  def handle_info(:timeout, state) do
+    Logger.info("Stopping room #{state.room_name}")
+    {:stop, :shutdown, state}
   end
 
   ###############

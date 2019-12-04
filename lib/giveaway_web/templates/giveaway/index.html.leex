@@ -1,5 +1,6 @@
 <button phx-click="create_room">Create Room</button>
 <%= if @index_state == :create do %>
+  <h3>Notice: Rooms will be deleted after <%= @room_timeout %> minutes of inactivity.</h3>
   <%= live_component(@socket, GiveawayWeb.Component.CreateRoom, id: :create_room, changeset: @changeset) %>
   <button phx-click="cancel">Cancel</button>
 <% end %>

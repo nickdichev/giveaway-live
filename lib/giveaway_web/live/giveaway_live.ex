@@ -9,11 +9,13 @@ defmodule GiveawayWeb.GiveawayLive do
   def mount(_session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(Giveaway.PubSub, "lobby")
 
-    {:ok, assign(socket, %{
-        index_state: nil,
-        room_names: Giveaway.Room.get_room_names()
-      })
+    assigns = %{
+      index_state: nil,
+      room_names: Giveaway.Room.get_room_names(),
+      room_timeout: Giveaway.Room.get_room_timeout(:minutes)
     }
+
+    {:ok, assign(socket, assigns)}
   end
 
   def render(assigns) do

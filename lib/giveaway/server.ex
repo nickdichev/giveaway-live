@@ -2,7 +2,7 @@ defmodule Giveaway.Server do
   use GenServer
 
   defmodule State do
-    defstruct [:room_name, :winner, participants: []]
+    defstruct [:room_name, :winner, :timeout, participants: []]
   end
 
   def child_spec(opts) do
@@ -18,8 +18,9 @@ defmodule Giveaway.Server do
   # PUBLIC API #
   ##############
 
-  def start_link(room_name) do
-    GenServer.start_link(__MODULE__, room_name, name: via_tuple(room_name))
+  def start_link(opts) do
+    room_name = Keyword.fetch!(opts, :room_name)
+    GenServer.start_link(__MODULE__, opts, name: via_tuple(room_name))
   end
 
   def get_name(room_pid) do
@@ -47,42 +48,46 @@ defmodule Giveaway.Server do
   #############
 
   @impl GenServer
-  @spec init(any) :: {:ok, Giveaway.Server.State.t()}
-  def init(room_name) do
+  @spec init(any) :: {:ok, Giveaway.Server.State.t(), timeout}
+  def init(opts) do
+    room_name = Keyword.fetch!(opts, :room_name)
+    room_timeout = Keyword.fetch!(opts, :room_timeout)
+
     state = %State{
-      room_name: room_name
+      room_name: room_name,
+      timeout: room_timeout
     }
 
-    {:ok, state}
+    {:ok, state, state.timeout}
   end
 
   @impl GenServer
   def handle_call(:get_name, _, state) do
-    {:reply, state.room_name, state}
+    {:reply, state.room_name, state, state.timeout}
   end
 
   @impl GenServer
   def handle_call(:get_participants, _, state) do
-    {:reply, state.participants, state}
+    {:reply, state.participants, state, state.timeout}
   end
 
   @impl GenServer
   def handle_call({:join, name}, _, state) do
     new_participants = [name | state.participants]
     new_state = %{state | participants: new_participants}
-    {:reply, new_state.participants, new_state}
+    {:reply, new_state.participants, new_state, state.timeout}
   end
 
   @impl GenServer
   def handle_call(:determine_winner, _, state) do
     winner = Enum.random(state.participants)
     new_state = %{state | winner: winner}
-    {:reply, winner, new_state}
+    {:reply, winner, new_state, state.timeout}
   end
 
   def handle_call(:get_winner, _, state) do
     winner = Map.get(state, :winner, nil)
-    {:reply, winner, state}
+    {:reply, winner, state, state.timeout}
   end
 
   ###############

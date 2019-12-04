@@ -3,6 +3,9 @@ defmodule Giveaway.Room do
   alias Giveaway.RoomSupervisor
   alias Giveaway.Server
 
+  # 30 minutes
+  @default_room_timeout 1_800_000
+
   @doc """
   Get all running room names.
   """
@@ -14,7 +17,9 @@ defmodule Giveaway.Room do
   @doc """
   Create a new room with a given name.
   """
-  def create_room(room_name), do: RoomSupervisor.create_room(room_name)
+  def create_room(room_name) do
+    RoomSupervisor.create_room(room_name: room_name, room_timeout: get_room_timeout(:milliseconds))
+  end
 
   def get_participants(room_name), do: Server.get_participants(room_name)
 
@@ -23,4 +28,9 @@ defmodule Giveaway.Room do
   def determine_winner(room_name), do: Server.determine_winner(room_name)
 
   def get_winner(room_name), do: Server.get_winner(room_name)
+
+  def get_room_timeout(:milliseconds), do: Application.get_env(:giveaway, :room_timeout, @default_room_timeout)
+
+  def get_room_timeout(:minutes), do: div(get_room_timeout(:milliseconds), 60_000)
+
 end

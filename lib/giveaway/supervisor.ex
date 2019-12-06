@@ -1,4 +1,4 @@
-defmodule Giveaway.RoomSupervisor do
+defmodule Giveaway.Room.Supervisor do
   use DynamicSupervisor
 
   def start_link(opts) do

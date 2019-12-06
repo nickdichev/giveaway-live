@@ -1,7 +1,6 @@
 defmodule Giveaway.Room do
 
-  alias Giveaway.RoomSupervisor
-  alias Giveaway.Room.Server
+  alias Giveaway.Room.{Server, Supervisor}
 
   # 30 minutes
   @default_room_timeout 1_800_000
@@ -10,7 +9,7 @@ defmodule Giveaway.Room do
   Get all running room names.
   """
   def get_room_names() do
-    RoomSupervisor.get_children()
+    Supervisor.get_children()
     |> Enum.map(&Server.get_name/1)
   end
 
@@ -18,7 +17,7 @@ defmodule Giveaway.Room do
   Create a new room with a given name.
   """
   def create_room(room_name) do
-    RoomSupervisor.create_room(room_name: room_name, room_timeout: get_room_timeout(:milliseconds))
+    Supervisor.create_room(room_name: room_name, room_timeout: get_room_timeout(:milliseconds))
   end
 
   def get_participants(room_name), do: Server.get_participants(room_name)

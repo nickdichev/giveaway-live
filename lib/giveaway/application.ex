@@ -8,7 +8,7 @@ defmodule Giveaway.Application do
   def start(_type, _args) do
     children = [
       GiveawayWeb.Endpoint,
-      Giveaway.RoomSupervisor,
+      Giveaway.Room.Supervisor,
       {Registry, [keys: :unique, name: Giveaway.RoomRegistry]}
     ]
 

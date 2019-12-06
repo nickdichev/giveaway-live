@@ -82,6 +82,11 @@ defmodule Giveaway.Server do
   end
 
   @impl GenServer
+  def handle_call(:determine_winner, _, %{participants: []} = state) do
+    {:reply, :noop, state, state.timeout}
+  end
+
+  @impl GenServer
   def handle_call(:determine_winner, _, state) do
     winner = Enum.random(state.participants)
     new_state = %{state | winner: winner}

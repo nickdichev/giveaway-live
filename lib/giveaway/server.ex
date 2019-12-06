@@ -102,6 +102,7 @@ defmodule Giveaway.Server do
   @impl GenServer
   def handle_info(:timeout, state) do
     Logger.info("Stopping room #{state.room_name}")
+    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "lobby", {:room_timeout, state.room_name})
     {:stop, :shutdown, state}
   end
 

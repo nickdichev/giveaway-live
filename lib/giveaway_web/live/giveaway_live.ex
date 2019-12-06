@@ -55,7 +55,18 @@ defmodule GiveawayWeb.GiveawayLive do
     {:noreply, assign(socket, assigns)}
   end
 
+  def handle_info({:room_timeout, room_name}, socket) do
+    curr_rooms = socket.assigns.room_names
+
+    assigns = %{
+      room_names: Enum.reject(curr_rooms, &(&1 == room_name))
+    }
+
+    {:noreply, assign(socket, assigns)}
+  end
+
   def handle_info({:create_redirect, room_name}, socket) do
     {:noreply, live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
   end
+
 end

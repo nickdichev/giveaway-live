@@ -1,4 +1,4 @@
-defmodule Giveaway.Server do
+defmodule Giveaway.Room.Server do
   use GenServer
 
   require Logger
@@ -51,7 +51,7 @@ defmodule Giveaway.Server do
   #############
 
   @impl GenServer
-  @spec init(any) :: {:ok, Giveaway.Server.State.t(), timeout}
+  @spec init(any) :: {:ok, Giveaway.Room.Server.State.t(), timeout}
   def init(opts) do
     room_name = Keyword.fetch!(opts, :room_name)
     room_timeout = Keyword.fetch!(opts, :room_timeout)

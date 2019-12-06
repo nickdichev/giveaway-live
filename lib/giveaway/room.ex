@@ -1,7 +1,7 @@
 defmodule Giveaway.Room do
 
   alias Giveaway.RoomSupervisor
-  alias Giveaway.Server
+  alias Giveaway.Room.Server
 
   # 30 minutes
   @default_room_timeout 1_800_000

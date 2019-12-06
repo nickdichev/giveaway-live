@@ -10,7 +10,7 @@ defmodule Giveaway.RoomSupervisor do
   end
 
   def create_room(room_name) do
-    DynamicSupervisor.start_child(__MODULE__, Giveaway.Server.child_spec(room_name: room_name))
+    DynamicSupervisor.start_child(__MODULE__, Giveaway.Room.Server.child_spec(room_name: room_name))
   end
 
   def get_children() do

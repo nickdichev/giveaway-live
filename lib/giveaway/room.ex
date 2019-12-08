@@ -18,13 +18,20 @@ defmodule Giveaway.Room do
   """
   def create_room(room_name) do
     Supervisor.create_room(room_name: room_name, room_timeout: get_room_timeout(:milliseconds))
+    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "lobby", {:room_created, room_name})
   end
 
   def get_participants(room_name), do: Server.get_participants(room_name)
 
-  def join(room_name, participant_name), do: Server.join(room_name, participant_name)
+  def join(room_name, participant_name) do
+    Server.join(room_name, participant_name)
+    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:join, participant_name})
+  end
 
-  def determine_winner(room_name), do: Server.determine_winner(room_name)
+  def determine_winner(room_name) do
+    winner = Server.determine_winner(room_name)
+    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:winner, winner})
+  end
 
   def get_winner(room_name), do: Server.get_winner(room_name)
 

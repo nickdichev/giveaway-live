@@ -24,9 +24,8 @@ defmodule GiveawayWeb.Component.CreateRoom do
     room_name = room_name(create_params)
 
     if changeset.valid? do
-      {:ok, _pid} = Room.create_room(room_name)
+      Room.create_room(room_name)
       send(self(), {:create_redirect, room_name})
-      Phoenix.PubSub.broadcast!(Giveaway.PubSub, "lobby", {:room_created, room_name})
       {:noreply, socket}
     else
         {:noreply, assign(socket, :changeset, changeset)}

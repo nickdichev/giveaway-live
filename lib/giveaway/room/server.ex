@@ -82,6 +82,9 @@ defmodule Giveaway.Room.Server do
   end
 
   @impl GenServer
+  @doc """
+  Determine winner when room is empty (no participants).
+  """
   def handle_call(:determine_winner, _, %{participants: []} = state) do
     {:reply, :noop, state, state.timeout}
   end
@@ -102,6 +105,7 @@ defmodule Giveaway.Room.Server do
   @impl GenServer
   def handle_info(:timeout, state) do
     Logger.info("Stopping room #{state.room_name}")
+    # TODO: move this broadcast call somewhere? (can that even be done?)
     Phoenix.PubSub.broadcast!(Giveaway.PubSub, "lobby", {:room_timeout, state.room_name})
     {:stop, :shutdown, state}
   end

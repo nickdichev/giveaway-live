@@ -49,9 +49,7 @@ defmodule GiveawayWeb.RoomLive do
   end
 
   def handle_event("determine_winner", _value, socket) do
-    room_name = socket.assigns.room_name
     winner = Room.determine_winner(socket.assigns.room_name)
-    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:winner, winner})
 
     {:noreply, assign(socket, :winner, winner)}
   end

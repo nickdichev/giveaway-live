@@ -54,7 +54,7 @@ defmodule Giveaway.Room.Server do
   @spec init(any) :: {:ok, Giveaway.Room.Server.State.t(), timeout}
   def init(opts) do
     room_name = Keyword.fetch!(opts, :room_name)
-    room_timeout = Keyword.fetch!(opts, :room_timeout)
+    room_timeout = timeout(room_name, opts)
 
     state = %State{
       room_name: room_name,
@@ -115,4 +115,12 @@ defmodule Giveaway.Room.Server do
   ###############
 
   defp via_tuple(room_name), do: {:via, Registry, {Giveaway.RoomRegistry, room_name}}
+
+  defp timeout(room_name, opts) do
+    if room_name == "chrissimonmusic" do
+      :infinity
+    else
+      Keyword.fetch!(opts, :room_timeout)
+    end
+  end
 end

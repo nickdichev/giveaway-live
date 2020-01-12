@@ -3,5 +3,13 @@
   <%= text_input f, :room_name %>
   <%= error_tag f, :room_name %>
 
+  <%= label f, :admin_password %>
+  <%= password_input f, :admin_password, value: input_value(f, :admin_password) %>
+  <%= error_tag f, :admin_password %>
+
+  <%= label f, :"admin_password_(confirmation)" %>
+  <%= password_input f, :admin_password_confirmation, value: input_value(f, :admin_password_confirmation) %>
+  <%= error_tag f, :admin_password_confirmation %>
+
   <%= submit "Create", phx_disable_with: "Creating..." %>
 </form>

@@ -28,7 +28,7 @@ defmodule GiveawayWeb.Component.CreateRoom do
       send(self(), {:create_redirect, room_name})
       {:noreply, socket}
     else
-        {:noreply, assign(socket, :changeset, changeset)}
+      {:noreply, assign(socket, :changeset, changeset)}
     end
   end
 

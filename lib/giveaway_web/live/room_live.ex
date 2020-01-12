@@ -5,10 +5,13 @@ defmodule GiveawayWeb.RoomLive do
   alias Giveaway.Changeset.JoinRoom
 
   alias GiveawayWeb.RoomView
+  alias GiveawayWeb.Router.Helpers, as: Routes
+  alias GiveawayWeb.Live.Helpers, as: LiveHelpers
 
   def mount(_session, socket) do
     assigns = %{
-      index_state: nil
+      index_state: nil,
+      subscribed: false
     }
 
     {:ok, assign(socket, assigns)}
@@ -22,12 +25,16 @@ defmodule GiveawayWeb.RoomLive do
     room_name = Map.get(params, "room_name")
     participants = Giveaway.Room.get_participants(room_name)
 
-    if connected?(socket), do: Phoenix.PubSub.subscribe(Giveaway.PubSub, "room:#{room_name}")
+    if LiveHelpers.subscribe?(connected?(socket), socket.assigns) do
+      Phoenix.PubSub.subscribe(Giveaway.PubSub, "room:#{room_name}")
+    end
 
     assigns = %{
       room_name: room_name,
       participants: participants,
-      winner: Room.get_winner(room_name)
+      winner: Room.get_winner(room_name),
+      subscribed: true,
+      index_state: nil
     }
 
     {:noreply, assign(socket, assigns)}
@@ -57,8 +64,7 @@ defmodule GiveawayWeb.RoomLive do
 
   def handle_info({:join, participant}, socket) do
     assigns = %{
-      participants: [participant | socket.assigns.participants],
-      index_state: nil
+      participants: [participant | socket.assigns.participants]
     }
 
     {:noreply, assign(socket, assigns)}
@@ -74,5 +80,12 @@ defmodule GiveawayWeb.RoomLive do
 
   def handle_info({:winner, winner}, socket) do
     {:noreply, assign(socket, :winner, winner)}
+  end
+
+  def handle_info(:create_redirect, socket) do
+    {:noreply,
+     live_redirect(socket,
+       to: Routes.live_path(socket, GiveawayWeb.RoomLive, socket.assigns.room_name)
+     )}
   end
 end

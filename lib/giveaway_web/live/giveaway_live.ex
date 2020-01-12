@@ -26,10 +26,11 @@ defmodule GiveawayWeb.GiveawayLive do
   Handles the click event on the "create room" button.
   """
   def handle_event("create_room", _value, socket) do
-    socket = assign(socket, %{
-      index_state: :create,
-      changeset: CreateRoom.changeset(%CreateRoom{})
-    })
+    socket =
+      assign(socket, %{
+        index_state: :create,
+        changeset: CreateRoom.changeset(%CreateRoom{})
+      })
 
     {:noreply, socket}
   end
@@ -38,7 +39,7 @@ defmodule GiveawayWeb.GiveawayLive do
   Handles the click event on the "cancel" button.
   """
   def handle_event("cancel", _value, socket) do
-    {:noreply, assign(socket, :index_state, :nil)}
+    {:noreply, assign(socket, :index_state, nil)}
   end
 
   @doc """
@@ -48,8 +49,7 @@ defmodule GiveawayWeb.GiveawayLive do
   """
   def handle_info({:room_created, room_name}, socket) do
     assigns = %{
-      room_names: [room_name | socket.assigns.room_names],
-      index_state: nil
+      room_names: [room_name | socket.assigns.room_names]
     }
 
     {:noreply, assign(socket, assigns)}
@@ -66,7 +66,7 @@ defmodule GiveawayWeb.GiveawayLive do
   end
 
   def handle_info({:create_redirect, room_name}, socket) do
-    {:noreply, live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
+    {:noreply,
+     live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
   end
-
 end

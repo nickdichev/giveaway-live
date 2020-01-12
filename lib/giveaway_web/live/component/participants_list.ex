@@ -1,7 +1,6 @@
 defmodule GiveawayWeb.Component.ParticipantsList do
   use Phoenix.LiveComponent
 
-  alias Giveaway.Room
   alias GiveawayWeb.ComponentsView
 
   def mount(socket) do

@@ -2,7 +2,6 @@ defmodule GiveawayWeb.RoomAdminLive do
   use Phoenix.LiveView
 
   alias Giveaway.Room
-  alias Giveaway.Changeset.JoinRoom
 
   alias GiveawayWeb.RoomAdminView
   alias GiveawayWeb.Router.Helpers, as: Routes

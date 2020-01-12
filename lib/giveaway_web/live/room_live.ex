@@ -48,10 +48,25 @@ defmodule GiveawayWeb.RoomLive do
     {:noreply, assign(socket, :index_state, nil)}
   end
 
+  ####################################################
+  # PubSub event handling                            #
+  # I wish these could be moved into the component   #
+  # however, LiveComponent does not implement        #
+  # handle_info/2                                    #
+  ####################################################
+
   def handle_info({:join, participant}, socket) do
     assigns = %{
       participants: [participant | socket.assigns.participants],
       index_state: nil
+    }
+
+    {:noreply, assign(socket, assigns)}
+  end
+
+  def handle_info({:remove, participant}, socket) do
+    assigns = %{
+      participants: Enum.reject(socket.assigns.participants, &(&1 == participant))
     }
 
     {:noreply, assign(socket, assigns)}

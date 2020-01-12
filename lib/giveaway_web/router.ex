@@ -19,7 +19,12 @@ defmodule GiveawayWeb.Router do
 
     live "/", GiveawayLive
     live "/room/:room_name", RoomLive
+
     live "/room/:room_name/admin", RoomAdminLive
+
+    live "/room/:room_name/admin/confirm_delete_participant", RoomAdminLive,
+      session: [:val],
+      as: "confirm_delete_participant"
   end
 
   # Other scopes may use custom stacks.

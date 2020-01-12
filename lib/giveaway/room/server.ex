@@ -4,7 +4,7 @@ defmodule Giveaway.Room.Server do
   require Logger
 
   defmodule State do
-    defstruct [:room_name, :winner, :timeout, participants: []]
+    defstruct [:room_name, :winner, :timeout, :admin_password, participants: []]
   end
 
   def child_spec(opts) do
@@ -54,11 +54,13 @@ defmodule Giveaway.Room.Server do
   @spec init(any) :: {:ok, Giveaway.Room.Server.State.t(), timeout}
   def init(opts) do
     room_name = Keyword.fetch!(opts, :room_name)
+    admin_password = Keyword.fetch!(opts, :admin_password)
     room_timeout = timeout(room_name, opts)
 
     state = %State{
       room_name: room_name,
-      timeout: room_timeout
+      timeout: room_timeout,
+      admin_password: admin_password
     }
 
     {:ok, state, state.timeout}

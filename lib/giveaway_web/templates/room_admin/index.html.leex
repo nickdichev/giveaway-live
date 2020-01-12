@@ -1,4 +1,6 @@
-<h1>hello</h1>
+<h1><%= @room_name %> (Admin View)</h1>
+<button phx-click="determine_winner">Winner</button>
 
+<p>
 Participants:
 <%= live_component(@socket, GiveawayWeb.Component.ParticipantsList, id: :participants_list, participants: @participants, winner: @winner) %>

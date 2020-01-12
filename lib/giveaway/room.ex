@@ -42,5 +42,15 @@ defmodule Giveaway.Room do
   def get_room_timeout(:milliseconds),
     do: Application.get_env(:giveaway, :room_timeout, @default_room_timeout)
 
-  def get_room_timeout(:minutes), do: div(get_room_timeout(:milliseconds), 60_000)
+  def get_room_timeout(:minutes) do
+    :milliseconds
+    |> get_room_timeout()
+    |> human_readable_timeout()
+  end
+
+  def human_readable_timeout(timeout) when is_integer(timeout) do
+    div(timeout, 60_000)
+  end
+
+  def human_readable_timeout(:infinity), do: "infinity"
 end

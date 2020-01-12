@@ -48,12 +48,6 @@ defmodule GiveawayWeb.RoomLive do
     {:noreply, assign(socket, :index_state, nil)}
   end
 
-  def handle_event("determine_winner", _value, socket) do
-    winner = Room.determine_winner(socket.assigns.room_name)
-
-    {:noreply, assign(socket, :winner, winner)}
-  end
-
   def handle_info({:join, participant}, socket) do
     assigns = %{
       participants: [participant | socket.assigns.participants],

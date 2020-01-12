@@ -1,1 +1,4 @@
 <h1>hello</h1>
+
+Participants:
+<%= live_component(@socket, GiveawayWeb.Component.ParticipantsList, id: :participants_list, participants: @participants, winner: @winner) %>

@@ -13,7 +13,7 @@ defmodule GiveawayWeb.Component.ParticipantsList do
   end
 
   def handle_event("delete", %{"participant" => participant_name}, socket) do
-    Room.remove(socket.assigns.room_name, participant_name)
+    send(self(), {:confirm_participant_delete, participant_name})
     {:noreply, socket}
   end
 end

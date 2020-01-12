@@ -34,7 +34,10 @@ defmodule GiveawayWeb.Component.Modal do
           }
         } = socket
       ) do
-    send(self(), {:button_clicked, %{action: right_button_action, param: right_button_param}})
+    send(
+      self(),
+      {:modal_button_clicked, %{action: right_button_action, param: right_button_param}}
+    )
 
     {:noreply, socket}
   end
@@ -49,7 +52,7 @@ defmodule GiveawayWeb.Component.Modal do
           }
         } = socket
       ) do
-    send(self(), {:button_clicked, %{action: left_button_action, param: left_button_param}})
+    send(self(), {:modal_button_clicked, %{action: left_button_action, param: left_button_param}})
 
     {:noreply, socket}
   end

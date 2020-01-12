@@ -39,6 +39,11 @@ defmodule GiveawayWeb.RoomAdminLive do
     {:noreply, assign(socket, :winner, winner)}
   end
 
+  def handle_event("reset_winner", _value, socket) do
+    Room.reset_winner(socket.assigns.room_name)
+    {:noreply, assign(socket, :winner, nil)}
+  end
+
   ####################################################
   # PubSub event handling                            #
   # I wish these could be moved into the component   #

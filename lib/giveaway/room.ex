@@ -42,6 +42,10 @@ defmodule Giveaway.Room do
     Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:winner, winner})
   end
 
+  def reset_winner(room_name) do
+    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:winner, nil})
+  end
+
   def get_winner(room_name), do: Server.get_winner(room_name)
 
   def get_room_timeout(:milliseconds),

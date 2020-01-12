@@ -23,4 +23,34 @@ defmodule GiveawayWeb.Component.Modal do
   def render(assigns) do
     ComponentsView.render("modal.html", assigns)
   end
+
+  def handle_event(
+        "right_button_click",
+        _value,
+        %{
+          assigns: %{
+            right_button_action: right_button_action,
+            right_button_param: right_button_param
+          }
+        } = socket
+      ) do
+    send(self(), {:button_clicked, %{action: right_button_action, param: right_button_param}})
+
+    {:noreply, socket}
+  end
+
+  def handle_event(
+        "left_button_click",
+        _value,
+        %{
+          assigns: %{
+            left_button_action: left_button_action,
+            left_button_param: left_button_param
+          }
+        } = socket
+      ) do
+    send(self(), {:button_clicked, %{action: left_button_action, param: left_button_param}})
+
+    {:noreply, socket}
+  end
 end

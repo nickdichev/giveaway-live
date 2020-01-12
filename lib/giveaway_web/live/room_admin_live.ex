@@ -50,14 +50,6 @@ defmodule GiveawayWeb.RoomAdminLive do
     {:no_reply, socket}
   end
 
-  def handle_event("left_button_click", _value, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_event("right_button_click", _value, socket) do
-    {:noreply, socket}
-  end
-
   ####################################################
   # PubSub event handling                            #
   # I wish these could be moved into the component   #

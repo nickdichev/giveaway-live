@@ -11,6 +11,6 @@ Participants:
 <%= live_component(
     @socket, 
     GiveawayWeb.Component.ParticipantsList, 
-    id: :participants_list, participants: @participants, winner: @winner, is_admin: false
+    id: :participants_list, participants: @participants, winner: @winner, room_name: @room_name, is_admin: false
   ) 
 %>

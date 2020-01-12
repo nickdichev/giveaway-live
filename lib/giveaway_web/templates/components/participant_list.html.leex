@@ -7,7 +7,9 @@
     <% end %>
     <%= participant %>
     <%= if @is_admin do %>
+    <div phx-click="delete" phx-value-participant="<%= participant %>" %>
     (Delete)
+    </div>
     <% end %>
     </li>
   <% end %>

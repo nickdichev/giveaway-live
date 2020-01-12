@@ -38,6 +38,10 @@ defmodule Giveaway.Room.Server do
     GenServer.call(via_tuple(room_name), {:join, participant_name})
   end
 
+  def remove(room_name, participant_name) do
+    GenServer.call(via_tuple(room_name), {:remove, participant_name})
+  end
+
   def determine_winner(room_name) do
     GenServer.call(via_tuple(room_name), :determine_winner)
   end
@@ -79,6 +83,12 @@ defmodule Giveaway.Room.Server do
   @impl GenServer
   def handle_call({:join, name}, _, state) do
     new_participants = [name | state.participants]
+    new_state = %{state | participants: new_participants}
+    {:reply, new_state.participants, new_state, state.timeout}
+  end
+
+  def handle_call({:remove, name}, _, state) do
+    new_participants = Enum.reject(state.participants, &(&1 == name))
     new_state = %{state | participants: new_participants}
     {:reply, new_state.participants, new_state, state.timeout}
   end

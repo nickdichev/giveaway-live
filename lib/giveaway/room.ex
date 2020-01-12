@@ -32,6 +32,11 @@ defmodule Giveaway.Room do
     Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:join, participant_name})
   end
 
+  def remove(room_name, participant_name) do
+    Server.remove(room_name, participant_name)
+    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:remove, participant_name})
+  end
+
   def determine_winner(room_name) do
     winner = Server.determine_winner(room_name)
     Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:winner, winner})

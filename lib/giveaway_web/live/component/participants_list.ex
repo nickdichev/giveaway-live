@@ -4,7 +4,6 @@ defmodule GiveawayWeb.Component.ParticipantsList do
   alias GiveawayWeb.ComponentsView
 
   def mount(socket) do
-    # {:ok, assign(socket, :participants, Room.get_participants(room_name))}
     {:ok, assign(socket, :participants, [])}
   end
 

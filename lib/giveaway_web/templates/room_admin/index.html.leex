@@ -3,4 +3,9 @@
 
 <p>
 Participants:
-<%= live_component(@socket, GiveawayWeb.Component.ParticipantsList, id: :participants_list, participants: @participants, winner: @winner) %>
+<%= live_component(
+    @socket, 
+    GiveawayWeb.Component.ParticipantsList, 
+    id: :participants_list, participants: @participants, winner: @winner, is_admin: true
+  ) 
+%>

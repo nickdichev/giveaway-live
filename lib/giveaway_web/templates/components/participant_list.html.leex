@@ -1,9 +1,14 @@
 <ul>
   <%= for participant <- @participants do %>
     <%= if @winner == participant do %>
-      <li class="winner"><%= participant %></li>
+      <li class="winner">
     <% else %>
-      <li><%= participant %></li>
+      <li> 
     <% end %>
+    <%= participant %>
+    <%= if @is_admin do %>
+    (Delete)
+    <% end %>
+    </li>
   <% end %>
 </ul>

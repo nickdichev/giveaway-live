@@ -1,5 +1,4 @@
 defmodule Giveaway.Room do
-
   alias Giveaway.Room.{Server, Supervisor}
 
   # 30 minutes
@@ -16,8 +15,13 @@ defmodule Giveaway.Room do
   @doc """
   Create a new room with a given name.
   """
-  def create_room(room_name) do
-    Supervisor.create_room(room_name: room_name, room_timeout: get_room_timeout(:milliseconds))
+  def create_room(room_name, admin_password) do
+    Supervisor.create_room(
+      room_name: room_name,
+      room_timeout: get_room_timeout(:milliseconds),
+      admin_password: admin_password
+    )
+
     Phoenix.PubSub.broadcast!(Giveaway.PubSub, "lobby", {:room_created, room_name})
   end
 
@@ -35,8 +39,8 @@ defmodule Giveaway.Room do
 
   def get_winner(room_name), do: Server.get_winner(room_name)
 
-  def get_room_timeout(:milliseconds), do: Application.get_env(:giveaway, :room_timeout, @default_room_timeout)
+  def get_room_timeout(:milliseconds),
+    do: Application.get_env(:giveaway, :room_timeout, @default_room_timeout)
 
   def get_room_timeout(:minutes), do: div(get_room_timeout(:milliseconds), 60_000)
-
 end

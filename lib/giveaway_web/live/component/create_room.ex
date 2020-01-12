@@ -22,9 +22,10 @@ defmodule GiveawayWeb.Component.CreateRoom do
   def handle_event("create", %{"create_room" => create_params}, socket) do
     changeset = changeset(create_params)
     room_name = room_name(create_params)
+    admin_password = admin_password(create_params) |> IO.inspect(label: :admin_password)
 
     if changeset.valid? do
-      Room.create_room(room_name)
+      Room.create_room(room_name, admin_password)
       send(self(), {:create_redirect, room_name})
       {:noreply, socket}
     else
@@ -33,6 +34,8 @@ defmodule GiveawayWeb.Component.CreateRoom do
   end
 
   defp room_name(create_params), do: Map.get(create_params, "room_name")
+
+  defp admin_password(create_params), do: Map.get(create_params, "admin_password")
 
   defp changeset(create_params) do
     %CreateRoom{}

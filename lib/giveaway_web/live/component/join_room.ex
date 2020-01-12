@@ -4,14 +4,14 @@ defmodule GiveawayWeb.Component.JoinRoom do
   alias Giveaway.Room
   alias Giveaway.Changeset.JoinRoom
 
-  alias GiveawayWeb.RoomView
+  alias GiveawayWeb.ComponentsView
 
   def mount(socket) do
     {:ok, socket}
   end
 
   def render(assigns) do
-    RoomView.render("join_room.html", assigns)
+    ComponentsView.render("join_room.html", assigns)
   end
 
   def handle_event("validate", %{"join_room" => join_params}, socket) do

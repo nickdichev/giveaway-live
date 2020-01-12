@@ -4,14 +4,14 @@ defmodule GiveawayWeb.Component.CreateRoom do
   alias Giveaway.Room
   alias Giveaway.Changeset.CreateRoom
 
-  alias GiveawayWeb.GiveawayView
+  alias GiveawayWeb.ComponentsView
 
   def mount(socket) do
     {:ok, socket}
   end
 
   def render(assigns) do
-    GiveawayView.render("create_room.html", assigns)
+    ComponentsView.render("create_room.html", assigns)
   end
 
   def handle_event("validate", %{"create_room" => create_params}, socket) do

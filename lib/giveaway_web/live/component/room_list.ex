@@ -3,13 +3,13 @@ defmodule GiveawayWeb.Component.RoomList do
 
   alias Giveaway.Room
 
-  alias GiveawayWeb.GiveawayView
+  alias GiveawayWeb.ComponentsView
 
   def mount(socket) do
-     {:ok, assign(socket, :room_names, Room.get_room_names())}
+    {:ok, assign(socket, :room_names, Room.get_room_names())}
   end
 
   def render(assigns) do
-    GiveawayView.render("room_list.html", assigns)
+    ComponentsView.render("room_list.html", assigns)
   end
 end

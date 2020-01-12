@@ -1,10 +1,10 @@
-defmodule GiveawayWeb.RoomLive do
+defmodule GiveawayWeb.RoomAdminLive do
   use Phoenix.LiveView
 
   alias Giveaway.Room
   alias Giveaway.Changeset.JoinRoom
 
-  alias GiveawayWeb.RoomView
+  alias GiveawayWeb.RoomAdminView
 
   def mount(_session, socket) do
     assigns = %{
@@ -15,7 +15,7 @@ defmodule GiveawayWeb.RoomLive do
   end
 
   def render(assigns) do
-    RoomView.render("index.html", assigns)
+    RoomAdminView.render("index.html", assigns)
   end
 
   def handle_params(params, _uri, socket) do
@@ -31,21 +31,6 @@ defmodule GiveawayWeb.RoomLive do
     }
 
     {:noreply, assign(socket, assigns)}
-  end
-
-  def handle_event("join_room", _value, socket) do
-    changeset = JoinRoom.changeset(%JoinRoom{})
-
-    assigns = %{
-      index_state: :join_room,
-      changeset: changeset
-    }
-
-    {:noreply, assign(socket, assigns)}
-  end
-
-  def handle_event("cancel", _value, socket) do
-    {:noreply, assign(socket, :index_state, nil)}
   end
 
   def handle_event("determine_winner", _value, socket) do

@@ -19,6 +19,7 @@ defmodule GiveawayWeb.Router do
 
     live "/", GiveawayLive
     live "/room/:room_name", RoomLive
+    live "/room/:room_name/admin", RoomAdminLive
   end
 
   # Other scopes may use custom stacks.

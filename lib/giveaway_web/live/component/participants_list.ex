@@ -1,7 +1,7 @@
 defmodule GiveawayWeb.Component.ParticipantsList do
   use Phoenix.LiveComponent
 
-  alias GiveawayWeb.RoomView
+  alias GiveawayWeb.ComponentsView
 
   def mount(socket) do
     # {:ok, assign(socket, :participants, Room.get_participants(room_name))}
@@ -9,6 +9,6 @@ defmodule GiveawayWeb.Component.ParticipantsList do
   end
 
   def render(assigns) do
-    RoomView.render("participant_list.html", assigns)
+    ComponentsView.render("participant_list.html", assigns)
   end
 end

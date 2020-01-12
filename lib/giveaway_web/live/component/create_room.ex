@@ -22,7 +22,7 @@ defmodule GiveawayWeb.Component.CreateRoom do
   def handle_event("create", %{"create_room" => create_params}, socket) do
     changeset = changeset(create_params)
     room_name = room_name(create_params)
-    admin_password = admin_password(create_params) |> IO.inspect(label: :admin_password)
+    admin_password = admin_password(create_params)
 
     if changeset.valid? do
       Room.create_room(room_name, admin_password)

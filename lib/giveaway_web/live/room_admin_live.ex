@@ -9,7 +9,8 @@ defmodule GiveawayWeb.RoomAdminLive do
 
   def mount(_session, socket) do
     assigns = %{
-      index_state: nil
+      index_state: nil,
+      subscribed: false
     }
 
     {:ok, assign(socket, assigns)}
@@ -26,7 +27,6 @@ defmodule GiveawayWeb.RoomAdminLive do
 
   def handle_params(params, _uri, "confirm_delete_participant", socket) do
     room_name = Map.get(params, "room_name")
-    IO.inspect(socket.assigns, label: :confirm_delete)
 
     assigns = %{
       room_name: room_name,
@@ -40,13 +40,16 @@ defmodule GiveawayWeb.RoomAdminLive do
     room_name = Map.get(params, "room_name")
     participants = Giveaway.Room.get_participants(room_name)
 
-    if connected?(socket), do: Phoenix.PubSub.subscribe(Giveaway.PubSub, "room:#{room_name}")
+    if subscribe?(connected?(socket), socket.assigns) do
+      Phoenix.PubSub.subscribe(Giveaway.PubSub, "room:#{room_name}")
+    end
 
     assigns = %{
       room_name: room_name,
       participants: participants,
       winner: Room.get_winner(room_name),
-      show_modal: false
+      show_modal: false,
+      subscribed: true
     }
 
     {:noreply, assign(socket, assigns)}
@@ -138,4 +141,7 @@ defmodule GiveawayWeb.RoomAdminLive do
     |> String.split("/", trim: true)
     |> List.last()
   end
+
+  defp subscribe?(true, %{subscribed: false}), do: true
+  defp subscribe?(_, _), do: false
 end

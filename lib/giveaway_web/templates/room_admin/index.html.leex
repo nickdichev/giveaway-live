@@ -10,3 +10,17 @@ Participants:
     id: :participants_list, participants: @participants, winner: @winner, room_name: @room_name, is_admin: true
   ) 
 %>
+
+<%= if @show_modal do %>
+  <%= live_component(@socket,
+    GiveawayWeb.Component.Modal,
+    id: "confirm-boom",
+    title: "Confirm?",
+    body: "Are you sure you want to remove",
+    confirm: @confirm_delete,
+    left_button: "Yes",
+    left_button_action: "delete",
+    right_button: "No",
+    right_button_action: "cancel")
+  %>
+<% end %>

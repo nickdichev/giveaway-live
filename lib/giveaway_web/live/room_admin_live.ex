@@ -24,8 +24,12 @@ defmodule GiveawayWeb.RoomAdminLive do
   def handle_params(params, uri, socket),
     do: handle_params(params, uri, last_path_segment(uri), socket)
 
-  def handle_params(_params, _uri, "confirm_delete_participant", socket) do
+  def handle_params(params, _uri, "confirm_delete_participant", socket) do
+    room_name = Map.get(params, "room_name")
+    IO.inspect(socket.assigns, label: :confirm_delete)
+
     assigns = %{
+      room_name: room_name,
       show_modal: true
     }
 
@@ -61,8 +65,12 @@ defmodule GiveawayWeb.RoomAdminLive do
 
   # Modal handling
 
-  def handle_info({:confirm_participant_delete, _participant}, socket) do
-    IO.inspect("redirecting")
+  def handle_info({:confirm_participant_delete, participant}, socket) do
+    assigns = %{
+      confirm_delete: participant
+    }
+
+    socket = assign(socket, assigns)
 
     {:noreply,
      live_redirect(socket,
@@ -76,9 +84,22 @@ defmodule GiveawayWeb.RoomAdminLive do
      )}
   end
 
-  def handle_info({:modal_button_clicked, _map}, socket) do
-    # Room.remove(socket.assigns.room_name, participant_name)
-    {:no_reply, socket}
+  def handle_info({:modal_button_clicked, %{action: "delete"}}, socket) do
+    Room.remove(socket.assigns.room_name, socket.assigns.confirm_delete)
+
+    {:noreply,
+     live_redirect(socket,
+       to: Routes.live_path(socket, GiveawayWeb.RoomAdminLive, socket.assigns.room_name),
+       replace: false
+     )}
+  end
+
+  def handle_info({:modal_button_clicked, %{action: "cancel"}}, socket) do
+    {:noreply,
+     live_redirect(socket,
+       to: Routes.live_path(socket, GiveawayWeb.RoomAdminLive, socket.assigns.room_name),
+       replace: false
+     )}
   end
 
   ####################################################

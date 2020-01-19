@@ -9,7 +9,8 @@ defmodule GiveawayWeb.RoomAdminLive do
   def mount(_session, socket) do
     assigns = %{
       index_state: nil,
-      subscribed: false
+      subscribed: false,
+      authenticated: false
     }
 
     {:ok, assign(socket, assigns)}
@@ -96,7 +97,27 @@ defmodule GiveawayWeb.RoomAdminLive do
      )}
   end
 
-  def handle_info({:modal_button_clicked, %{action: "cancel"}}, socket) do
+  def handle_info({:modal_button_clicked, %{action: "cancel_remove"}}, socket) do
+    {:noreply,
+     live_redirect(socket,
+       to: Routes.live_path(socket, GiveawayWeb.RoomAdminLive, socket.assigns.room_name),
+       replace: false
+     )}
+  end
+
+  def handle_info({:modal_button_clicked, %{action: "cancel_authenticate"}}, socket) do
+    {:noreply,
+     live_redirect(socket,
+       to: Routes.live_path(socket, GiveawayWeb.RoomLive, socket.assigns.room_name),
+       replace: false
+     )}
+  end
+
+  def handle_info({:modal_button_clicked, %{action: "authenticate", param: password}}, socket) do
+    valid_password = Giveaway.Room.correct_password?(socket.assigns.room_name, password)
+
+    socket = assign(socket, :authenticated, valid_password)
+
     {:noreply,
      live_redirect(socket,
        to: Routes.live_path(socket, GiveawayWeb.RoomAdminLive, socket.assigns.room_name),

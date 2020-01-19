@@ -1,9 +1,10 @@
-defmodule GiveawayWeb.Component.Modal do
+defmodule GiveawayWeb.Component.ButtonModal do
   use Phoenix.LiveComponent
 
   alias GiveawayWeb.ComponentsView
 
   @defaults %{
+    body: nil,
     left_button: "Cancel",
     left_button_action: nil,
     left_button_param: nil,
@@ -21,7 +22,7 @@ defmodule GiveawayWeb.Component.Modal do
   end
 
   def render(assigns) do
-    ComponentsView.render("modal.html", assigns)
+    ComponentsView.render("button_modal.html", assigns)
   end
 
   def handle_event(

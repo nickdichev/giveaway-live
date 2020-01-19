@@ -62,4 +62,8 @@ defmodule Giveaway.Room do
   end
 
   def human_readable_timeout(:infinity), do: "infinity"
+
+  def correct_password?(room_name, password) do
+    Server.correct_password?(room_name, password)
+  end
 end

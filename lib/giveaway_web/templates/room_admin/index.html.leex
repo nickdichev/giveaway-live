@@ -1,26 +1,40 @@
-<h1><%= @room_name %> (Admin View)</h1>
-<button phx-click="determine_winner">Winner</button>
-<button phx-click="reset_winner">Reset Winner</button>
+<%= if @authenticated  do %>
+  <h1><%= @room_name %> (Admin View)</h1>
+  <button phx-click="determine_winner">Winner</button>
+  <button phx-click="reset_winner">Reset Winner</button>
 
-<p>
-Participants:
-<%= live_component(
-    @socket, 
-    GiveawayWeb.Component.ParticipantsList, 
-    id: :participants_list, participants: @participants, winner: @winner, room_name: @room_name, is_admin: true
-  ) 
-%>
-
-<%= if @show_modal do %>
-  <%= live_component(@socket,
-    GiveawayWeb.Component.Modal,
-    id: "confirm-boom",
-    title: "Confirm?",
-    body: "Are you sure you want to remove",
-    confirm: @confirm_delete,
-    right_button: "Yes",
-    right_button_action: "delete",
-    left_button: "No",
-    left_button_action: "cancel")
+  <p>
+  Participants:
+  <%= live_component(
+      @socket, 
+      GiveawayWeb.Component.ParticipantsList, 
+      id: :participants_list, participants: @participants, winner: @winner, room_name: @room_name, is_admin: true
+    ) 
   %>
+
+  <%= if @show_modal do %>
+    <%= live_component(@socket,
+      GiveawayWeb.Component.ButtonModal,
+      id: "confirm-remove",
+      title: "Confirm?",
+      body: "Are you sure you want to remove " <> @confirm_delete,
+      right_button: "Yes",
+      right_button_action: "delete",
+      left_button: "No",
+      left_button_action: "cancel_remove")
+    %>
+  <% end %>
+
+<%= else  %>
+    <%= live_component(@socket,
+      GiveawayWeb.Component.FormModal,
+      id: "authenticate",
+      title: "Authenticate",
+      body: "Enter the room's password.",
+      password_input: true,
+      right_button: "Enter",
+      right_button_action: "authenticate",
+      left_button: "Cancel",
+      left_button_action: "cancel_authenticate")
+    %>
 <% end %>

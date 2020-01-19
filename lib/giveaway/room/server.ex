@@ -50,6 +50,10 @@ defmodule Giveaway.Room.Server do
     GenServer.call(via_tuple(room_name), :get_winner)
   end
 
+  def correct_password?(room_name, password) do
+    GenServer.call(via_tuple(room_name), {:check_password, password})
+  end
+
   #############
   # CALLBACKS #
   #############
@@ -112,6 +116,12 @@ defmodule Giveaway.Room.Server do
   def handle_call(:get_winner, _, state) do
     winner = Map.get(state, :winner, nil)
     {:reply, winner, state, state.timeout}
+  end
+
+  @impl GenServer
+  def handle_call({:check_password, password}, _, state) do
+    valid = password == state.admin_password
+    {:reply, valid, state, state.timeout}
   end
 
   @impl GenServer

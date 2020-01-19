@@ -1,0 +1,53 @@
+<div>
+    <!-- Modal Background -->
+    <div class="modal-container"
+        phx-hook="ScrollLock">
+      <div class="modal-inner-container">
+        <div class="modal-card">
+          <div class="modal-inner-card">
+            <!-- Title -->
+            <%= if @title != nil do %>
+            <div class="modal-title">
+              <%= @title %>
+            </div>
+            <% end %>
+
+            <!-- Body  -->
+            <%= if @body != nil do %>
+            <div class="modal-body">
+              <%= @body %>
+            </div>
+            <% end %>
+
+            <!-- Form -->
+            <form class = "modal-body" phx-submit="submit">
+              <%= if @password_input do %>
+                <input type="password" name="password" placeholder="password..."/>
+              <% else %>
+                <input  placeholder=""/>
+              <% end %>
+
+              <!-- Buttons -->
+              <div class="modal-buttons">
+                <!-- Left Button -->
+                <button class="left-button"
+                        type="button"
+                        phx-click="left_button_click">
+                  <div>
+                    <%= @left_button %>
+                  </div>
+                </button>
+                <!-- Right Button -->
+                <button class="right-button"
+                        type="submit" >
+                  <div>
+                    <%= @right_button %>
+                  </div>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

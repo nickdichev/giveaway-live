@@ -1,11 +1,17 @@
 defmodule GiveawayWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :giveaway
 
+  @session_options [
+    store: :cookie,
+    key: "_giveaway_key",
+    signing_salt: "8BsLtPVd"
+  ]
+
   socket "/socket", GiveawayWeb.UserSocket,
     websocket: true,
     longpoll: false
 
-  socket "/live", Phoenix.LiveView.Socket
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -39,10 +45,7 @@ defmodule GiveawayWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
-  plug Plug.Session,
-    store: :cookie,
-    key: "_giveaway_key",
-    signing_salt: "8BsLtPVd"
+  plug Plug.Session, @session_options
 
   plug GiveawayWeb.Router
 end

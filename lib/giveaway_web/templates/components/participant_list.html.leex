@@ -1,16 +1,18 @@
-<ul>
-  <%= for participant <- @participants do %>
-    <%= if @winner == participant do %>
-      <li class="winner">
-    <% else %>
-      <li> 
+<div id="<%= @id %>">
+  <ul>
+    <%= for participant <- @participants do %>
+      <%= if @winner == participant do %>
+        <li class="winner">
+      <% else %>
+        <li> 
+      <% end %>
+      <%= participant %>
+      <%= if @is_admin do %>
+      <div phx-target="#<%= @id %>" phx-click="delete" phx-value-participant="<%= participant %>" style="color: red" %>
+      (Delete)
+      </div>
+      <% end %>
+      </li>
     <% end %>
-    <%= participant %>
-    <%= if @is_admin do %>
-    <div phx-click="delete" phx-value-participant="<%= participant %>" style="color: red" %>
-    (Delete)
-    </div>
-    <% end %>
-    </li>
-  <% end %>
-</ul>
+  </ul>
+</div>

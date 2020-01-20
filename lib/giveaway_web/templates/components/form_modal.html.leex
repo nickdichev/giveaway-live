@@ -1,4 +1,4 @@
-<div>
+<div id="<%= @id %>">
     <!-- Modal Background -->
     <div class="modal-container"
         phx-hook="ScrollLock">
@@ -20,7 +20,7 @@
             <% end %>
 
             <!-- Form -->
-            <form class = "modal-body" phx-submit="submit">
+            <form class="modal-body" phx-submit="submit" phx-target="#<%= @id %>">
               <%= if @password_input do %>
                 <input type="password" name="password" placeholder="password..."/>
               <% else %>
@@ -32,14 +32,15 @@
                 <!-- Left Button -->
                 <button class="left-button"
                         type="button"
-                        phx-click="left_button_click">
+                        phx-click="left_button_click"
+                        phx-target="#<%= @id %>">
                   <div>
                     <%= @left_button %>
                   </div>
                 </button>
                 <!-- Right Button -->
                 <button class="right-button"
-                        type="submit" >
+                        type="submit">
                   <div>
                     <%= @right_button %>
                   </div>

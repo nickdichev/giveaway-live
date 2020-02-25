@@ -25,7 +25,7 @@ defmodule GiveawayWeb.Component.JoinRoom do
 
     if changeset.valid? do
       Room.join(socket.assigns.room_name, participant_name)
-      send(self(), :create_redirect)
+      # send(self(), :create_redirect)
       {:noreply, socket}
     else
       {:noreply, assign(socket, :changeset, changeset)}

@@ -64,7 +64,8 @@ defmodule GiveawayWeb.RoomLive do
 
   def handle_info({:join, participant}, socket) do
     assigns = %{
-      participants: [participant | socket.assigns.participants]
+      participants: [participant | socket.assigns.participants],
+      index_state: nil
     }
 
     {:noreply, assign(socket, assigns)}
@@ -80,12 +81,5 @@ defmodule GiveawayWeb.RoomLive do
 
   def handle_info({:winner, winner}, socket) do
     {:noreply, assign(socket, :winner, winner)}
-  end
-
-  def handle_info(:create_redirect, socket) do
-    {:noreply,
-     live_redirect(socket,
-       to: Routes.live_path(socket, GiveawayWeb.RoomLive, socket.assigns.room_name)
-     )}
   end
 end

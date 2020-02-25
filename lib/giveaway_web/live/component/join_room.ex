@@ -7,7 +7,11 @@ defmodule GiveawayWeb.Component.JoinRoom do
   alias GiveawayWeb.ComponentsView
 
   def mount(socket) do
-    {:ok, socket}
+    assigns = %{
+      already_joined?: false
+    }
+
+    {:ok, assign(socket, assigns)}
   end
 
   def render(assigns) do
@@ -23,12 +27,13 @@ defmodule GiveawayWeb.Component.JoinRoom do
     changeset = changeset(join_params)
     participant_name = participant_name(join_params)
 
-    if changeset.valid? do
-      Room.join(socket.assigns.room_name, participant_name)
-      # send(self(), :create_redirect)
+    # yikes
+    with true <- changeset.valid?,
+         :ok <- Room.join(socket.assigns.room_name, participant_name) do
       {:noreply, socket}
     else
-      {:noreply, assign(socket, :changeset, changeset)}
+      false -> {:noreply, assign(socket, :changeset, changeset)}
+      {:error, :already_joined} -> {:noreply, assign(socket, :already_joined?, true)}
     end
   end
 

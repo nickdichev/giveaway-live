@@ -1,4 +1,10 @@
 <div id="<%= @id %>">
+  <%= if @already_joined? do %>
+    <div class="alert-box">
+      Names must be unique! (sorry)
+    </div>
+  <% end %>
+  
   <%= f = form_for @changeset, "#", [phx_target: "#" <> "#{@id}", phx_change: :validate, phx_submit: :join] %>
     <%= label f, :name %>
     <%= text_input f, :name %>
@@ -6,4 +12,5 @@
 
     <%= submit "Join", phx_disable_with: "Joining..." %>
   </form>
+
 </div>

@@ -86,9 +86,13 @@ defmodule Giveaway.Room.Server do
 
   @impl GenServer
   def handle_call({:join, name}, _, state) do
-    new_participants = [name | state.participants]
-    new_state = %{state | participants: new_participants}
-    {:reply, new_state.participants, new_state, state.timeout}
+    if name in state.participants do
+      {:reply, {:error, :already_joined}, state, state.timeout}
+    else
+      new_participants = [name | state.participants]
+      new_state = %{state | participants: new_participants}
+      {:reply, {:ok, new_state.participants}, new_state, state.timeout}
+    end
   end
 
   def handle_call({:remove, name}, _, state) do

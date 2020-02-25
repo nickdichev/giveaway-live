@@ -28,8 +28,13 @@ defmodule Giveaway.Room do
   def get_participants(room_name), do: Server.get_participants(room_name)
 
   def join(room_name, participant_name) do
-    Server.join(room_name, participant_name)
-    Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:join, participant_name})
+    case Server.join(room_name, participant_name) do
+      {:ok, _participants} ->
+        Phoenix.PubSub.broadcast!(Giveaway.PubSub, "room:#{room_name}", {:join, participant_name})
+
+      {:error, :already_joined} ->
+        {:error, :already_joined}
+    end
   end
 
   def remove(room_name, participant_name) do

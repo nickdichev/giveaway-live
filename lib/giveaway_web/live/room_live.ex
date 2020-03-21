@@ -5,7 +5,6 @@ defmodule GiveawayWeb.RoomLive do
   alias Giveaway.Changeset.JoinRoom
 
   alias GiveawayWeb.RoomView
-  alias GiveawayWeb.Router.Helpers, as: Routes
   alias GiveawayWeb.Live.Helpers, as: LiveHelpers
 
   def mount(_params, _session, socket) do

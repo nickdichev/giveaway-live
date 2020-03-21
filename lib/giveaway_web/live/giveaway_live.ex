@@ -67,6 +67,6 @@ defmodule GiveawayWeb.GiveawayLive do
 
   def handle_info({:create_redirect, room_name}, socket) do
     {:noreply,
-     live_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
+     push_redirect(socket, to: Routes.live_path(socket, GiveawayWeb.RoomLive, room_name))}
   end
 end

@@ -76,7 +76,7 @@ defmodule GiveawayWeb.RoomAdminLive do
     socket = assign(socket, assigns)
 
     {:noreply,
-     live_redirect(socket,
+     push_patch(socket,
        to:
          Routes.confirm_delete_participant_path(
            socket,
@@ -91,7 +91,7 @@ defmodule GiveawayWeb.RoomAdminLive do
     Room.remove(socket.assigns.room_name, socket.assigns.confirm_delete)
 
     {:noreply,
-     live_redirect(socket,
+     push_patch(socket,
        to: Routes.live_path(socket, GiveawayWeb.RoomAdminLive, socket.assigns.room_name),
        replace: false
      )}
@@ -99,7 +99,7 @@ defmodule GiveawayWeb.RoomAdminLive do
 
   def handle_info({:modal_button_clicked, %{action: "cancel_remove"}}, socket) do
     {:noreply,
-     live_redirect(socket,
+     push_patch(socket,
        to: Routes.live_path(socket, GiveawayWeb.RoomAdminLive, socket.assigns.room_name),
        replace: false
      )}
@@ -107,7 +107,7 @@ defmodule GiveawayWeb.RoomAdminLive do
 
   def handle_info({:modal_button_clicked, %{action: "cancel_authenticate"}}, socket) do
     {:noreply,
-     live_redirect(socket,
+     push_patch(socket,
        to: Routes.live_path(socket, GiveawayWeb.RoomLive, socket.assigns.room_name),
        replace: false
      )}
@@ -119,7 +119,7 @@ defmodule GiveawayWeb.RoomAdminLive do
     socket = assign(socket, :authenticated, valid_password)
 
     {:noreply,
-     live_redirect(socket,
+     push_patch(socket,
        to: Routes.live_path(socket, GiveawayWeb.RoomAdminLive, socket.assigns.room_name),
        replace: false
      )}

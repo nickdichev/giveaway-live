@@ -1,5 +1,5 @@
 <ul>
   <%= for room <- @room_names do %>
-    <li><%= live_link "#{room}", to: Routes.live_path(@socket, GiveawayWeb.RoomLive, room) %></li>
+    <li><%= live_redirect "#{room}", to: Routes.live_path(@socket, GiveawayWeb.RoomLive, room) %></li>
   <% end %>
 </ul>

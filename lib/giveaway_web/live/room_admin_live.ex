@@ -6,7 +6,7 @@ defmodule GiveawayWeb.RoomAdminLive do
   alias GiveawayWeb.RoomAdminView
   alias GiveawayWeb.Router.Helpers, as: Routes
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     assigns = %{
       index_state: nil,
       subscribed: false,

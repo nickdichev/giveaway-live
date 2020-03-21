@@ -8,7 +8,7 @@ defmodule GiveawayWeb.RoomLive do
   alias GiveawayWeb.Router.Helpers, as: Routes
   alias GiveawayWeb.Live.Helpers, as: LiveHelpers
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     assigns = %{
       index_state: nil,
       subscribed: false

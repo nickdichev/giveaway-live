@@ -6,7 +6,7 @@ defmodule GiveawayWeb.GiveawayLive do
   alias GiveawayWeb.GiveawayView
   alias GiveawayWeb.Router.Helpers, as: Routes
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(Giveaway.PubSub, "lobby")
 
     assigns = %{
